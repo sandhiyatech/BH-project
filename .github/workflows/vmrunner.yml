@@ -13,7 +13,6 @@ jobs:
       uses: actions/checkout@v2
     
     - name: configure self-hosted runner
-      uses: azure/CLI@v1
       with:
         inlineScript: |
           # Install GitHub runner on the VM
