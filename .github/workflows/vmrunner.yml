@@ -1,27 +1,39 @@
-name: Setup Self-hosted Runner on Azure VM
+name: Set up Self-Hosted Runner
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   setup-runner:
     runs-on: ubuntu-latest
+    name: Set up and Configure Self-Hosted Runner
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Install SSH client
-        run: sudo apt-get install openssh-client -y
+    - name: Create Azure VM and configure self-hosted runner
+      id: azure-vm
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.0.72
+        inlineScript: |
+          # Variables
+          RESOURCE_GROUP="BH-Team"
+          VM_NAME="vm-san-infra"
+          ADMIN_USERNAME="azureuser"
+          # Get the VM's public IP address
+          IP_ADDRESS=$(az vm list-ip-addresses --resource-group $RESOURCE_GROUP --name $VM_NAME --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress -o tsv)
+          echo "VM IP Address: $IP_ADDRESS"
 
-      - name: Copy SSH private key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
-
-      - name: Install GitHub runner
-        run: |
-          wget https://github.com/actions/runner/releases/download/v2.283.1/actions-runner-linux-x64-2.283.1.tar.gz
-          tar xzf ./actions-runner-linux-x64-2.283.1.tar.gz
-          ./config.sh --url ${{ secrets.REPOSITORY_URL }} --token ${{ secrets.PAT_TOKEN }} --unattended --labels ${{ secrets.RUNNER_LABELS }}
-          ./svc.sh install
-          ./svc.sh start
+          # Install GitHub runner on the VM
+          ssh -o StrictHostKeyChecking=no $ADMIN_USERNAME@$IP_ADDRESS << EOF
+            sudo apt-get update
+            sudo apt-get install -y curl
+            curl -o actions-runner-linux-x64-$RUNNER_VERSION.tar.gz -L https://github.com/actions/runner/releases/download/v$RUNNER_VERSION/actions-runner-linux-x64-$RUNNER_VERSION.tar.gz
+            tar xzf ./actions-runner-linux-x64-$RUNNER_VERSION.tar.gz
+            ./config.sh --url https://github.com/yourusername/yourrepository --token YOUR_GITHUB_RUNNER_TOKEN
+            sudo ./svc.sh install
+            sudo ./svc.sh start
+          EOF
