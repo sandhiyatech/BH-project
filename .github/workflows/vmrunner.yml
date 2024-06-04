@@ -1,0 +1,27 @@
+name: Setup Self-hosted Runner on Azure VM
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-runner:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Install SSH client
+        run: sudo apt-get install openssh-client -y
+
+      - name: Copy SSH private key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Install GitHub runner
+        run: |
+          wget https://github.com/actions/runner/releases/download/v2.283.1/actions-runner-linux-x64-2.283.1.tar.gz
+          tar xzf ./actions-runner-linux-x64-2.283.1.tar.gz
+          ./config.sh --url ${{ secrets.REPOSITORY_URL }} --token ${{ secrets.PAT_TOKEN }} --unattended --labels ${{ secrets.RUNNER_LABELS }}
+          ./svc.sh install
+          ./svc.sh start
