@@ -22,7 +22,7 @@ jobs:
    #     az vm start --resource-group <Resource-Group-Name> --name <VM-Name>
 
     - name: SSH into Azure VM and setup runner
-      #uses: appleboy/ssh-action@v0.1
+      uses: appleboy/ssh-action@v0.1
       with:
         host: ${{ secrets.AZURE_VM_IP }}
         username: ${{ secrets.AZURE_VM_USERNAME }}
