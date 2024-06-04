@@ -16,7 +16,7 @@ jobs:
       - name: Copy SSH private key
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
 
       - name: Install GitHub runner
         run: |
