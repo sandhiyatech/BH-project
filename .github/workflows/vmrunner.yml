@@ -12,38 +12,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
     
-    - name: Log in to Azure
-      uses: azure/login@v1
-      with:
-        creds: >
-          {
-            "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
-            "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
-            "tenantId": "${{ secrets.AZURE_TENANT_ID }}",
-            "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          }
-      
     - name: configure self-hosted runner
-      id: azure-vm
       uses: azure/CLI@v1
       with:
-        azcliversion: 2.0.72
         inlineScript: |
-          # Variables
-          RESOURCE_GROUP="BH-Team"
-          VM_NAME="vm-san-infra"
-          ADMIN_USERNAME="azureuser"
-          # Get the VM's public IP address
-          IP_ADDRESS=$(az vm list-ip-addresses --resource-group $RESOURCE_GROUP --name $VM_NAME --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress -o tsv)
-          echo "VM IP Address: $IP_ADDRESS"
-
           # Install GitHub runner on the VM
-          ssh -o StrictHostKeyChecking=no $ADMIN_USERNAME@$IP_ADDRESS << EOF
-            sudo apt-get update
-            sudo apt-get install -y curl
-            curl -o actions-runner-linux-x64-${{ env.RUNNER_VERSION }}.tar.gz -L https://github.com/actions/runner/releases/download/v${{ env.RUNNER_VERSION }}/actions-runner-linux-x64-${{ env.RUNNER_VERSION }}.tar.gz
-            tar xzf ./actions-runner-linux-x64-${{ env.RUNNER_VERSION }}.tar.gz
-            ./config.sh --url ${{ secrets.REPOSITORY_URL }} --token ./config.cmd --url https://github.com/sandhiyatech/My-learnings --token AS33PNBLKH7VJVBQYIRFQZLGL4D3Q
-            sudo ./svc.sh install
-            sudo ./svc.sh start
-          EOF
+            # Create a folder
+          mkdir actions-runner && cd actions-runner# Download the latest runner package
+          curl -o actions-runner-linux-x64-2.316.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.316.1/actions-runner-linux-x64-2.316.1.tar.gz# Optional: Validate the hash
+          echo "d62de2400eeeacd195db91e2ff011bfb646cd5d85545e81d8f78c436183e09a8  actions-runner-linux-x64-2.316.1.tar.gz" | shasum -a 256 -c# Extract the installer
+          tar xzf ./actions-runner-linux-x64-2.316.1.tar.gz
+          ./config.sh --url https://github.com/sandhiyatech/My-learnings --token AS33PNG6KMOQBOOBO3VNTFLGL5IHC
+          sudo ./svc.sh install
+          sudo ./svc.sh start
+          
