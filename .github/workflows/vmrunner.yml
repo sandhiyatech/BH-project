@@ -6,7 +6,7 @@ on:
       - main
 jobs:
   setup-runner:
-    runs-on: self-hosted runner
+    runs-on: self-hosted 
     name: Set up and Configure Self-Hosted Runner
     steps:
     - name: Checkout repository
