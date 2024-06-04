@@ -39,8 +39,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no $ADMIN_USERNAME@$IP_ADDRESS << EOF
             sudo apt-get update
             sudo apt-get install -y curl
-            curl -o actions-runner-linux-x64-$RUNNER_VERSION.tar.gz -L https://github.com/actions/runner/releases/download/v$RUNNER_VERSION/actions-runner-linux-x64-$RUNNER_VERSION.tar.gz
-            tar xzf ./actions-runner-linux-x64-$RUNNER_VERSION.tar.gz
+            curl -o actions-runner-linux-x64-${{ env.RUNNER_VERSION }}.tar.gz -L https://github.com/actions/runner/releases/download/v${{ env.RUNNER_VERSION }}/actions-runner-linux-x64-${{ env.RUNNER_VERSION }}.tar.gz
+            tar xzf ./actions-runner-linux-x64-${{ env.RUNNER_VERSION }}.tar.gz
             ./config.sh --url ${{ REPOSITORY_URL }} --token ./config.cmd --url https://github.com/sandhiyatech/My-learnings --token AS33PNBLKH7VJVBQYIRFQZLGL4D3Q
             sudo ./svc.sh install
             sudo ./svc.sh start
