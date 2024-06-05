@@ -25,6 +25,7 @@ jobs:
           tar xzf ./actions-runner-linux-x64-2.284.0.tar.gz
           ./config.sh --url ${{ secrets.REPOSITORY_URL }} --token ${{ secrets.RUNNER_TOKEN }}
           Default 
+          Agent2
           sudo ./svc.sh install
           sudo ./svc.sh start
         EOF
