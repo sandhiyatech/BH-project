@@ -24,6 +24,7 @@ jobs:
           curl -o actions-runner-linux-x64-2.284.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.284.0/actions-runner-linux-x64-2.284.0.tar.gz
           tar xzf ./actions-runner-linux-x64-2.284.0.tar.gz
           ./config.sh --url ${{ secrets.REPOSITORY_URL }} --token ${{ secrets.RUNNER_TOKEN }}
+          echo -e "\n" | ./config.sh --url ${{ secrets.REPOSITORY_URL }} --token ${{ secrets.RUNNER_TOKEN }}
           sudo ./svc.sh install
           sudo ./svc.sh start
         EOF
