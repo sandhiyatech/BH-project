@@ -17,10 +17,10 @@ on:
         description: 'Label for the runner'
         required: true
       runner:
-        description: 'Default runner'
+        description: 'Name of runner group'
         required: true
       dir_name:
-        description: 'Default runner'
+        description: 'Directory name'
         required: true
 jobs:
   setup-additional-runner:
