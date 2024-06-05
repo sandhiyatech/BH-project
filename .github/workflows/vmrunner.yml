@@ -46,7 +46,7 @@ jobs:
         EOF
     - name: To make runner online
       run: |
-          cd ${{ github.event.inputs.dir_name}}
+          cd /home/sandhiya/${{ github.event.inputs.dir_name}}
           ./svc.sh install
           ./svc.sh start
 
