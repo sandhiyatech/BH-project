@@ -43,7 +43,6 @@ jobs:
           ./config.sh --url ${{ github.event.inputs.repo_choice }} --token ${{ github.event.inputs.runner_token }}
           ${{ github.event.inputs.runner }}
           ${{ github.event.inputs.label }}
-          yes
           #echo sudo ./svc.sh install
           #echo sudo ./svc.sh start
         EOF
