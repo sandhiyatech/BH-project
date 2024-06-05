@@ -6,6 +6,7 @@ on:
       repo_choice:
         description: 'Repository to configure the runner for'
         required: true
+        type: choice
         options: 
           - 'https://github.com/sandhiyatech/aws'
           - 'https://github.com/sandhiyatech/retail_store_project'
