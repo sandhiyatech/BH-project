@@ -44,9 +44,13 @@ jobs:
           ${{ github.event.inputs.runner }}
           ${{ github.event.inputs.label }}
           yes
-          echo sudo ./svc.sh install
-          echo sudo ./svc.sh start
+          #echo sudo ./svc.sh install
+          #echo sudo ./svc.sh start
         EOF
+    - name: To make runner online
+      run: |
+          sudo ./svc.sh install
+          sudo ./svc.sh start
 
     - name: Wait for runner to register
       run: sleep 60
