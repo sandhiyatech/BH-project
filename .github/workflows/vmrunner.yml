@@ -8,19 +8,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    
-   # - name: Install Azure CLI
-   #   run: |
-   #   curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-    #- name: Login to Azure
-     # run: |
-       # az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-
-   # - name: Start Azure VM
-   #   run: |
-   #     az vm start --resource-group <Resource-Group-Name> --name <VM-Name>
-
+      
     - name: SSH into Azure VM and setup runner
       uses: appleboy/ssh-action@v0.1.2
       with:
