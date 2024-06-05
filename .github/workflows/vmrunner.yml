@@ -44,8 +44,8 @@ jobs:
           ${{ github.event.inputs.runner }}
           ${{ github.event.inputs.label }}
           yes
-          sudo ./svc.sh install
-          sudo ./svc.sh start
+          echo sudo ./svc.sh install
+          echo sudo ./svc.sh start
         EOF
 
     - name: Wait for runner to register
